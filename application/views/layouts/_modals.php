@@ -24,7 +24,7 @@
                 <div class="col-md-6">
                 <div class="form-group bmd-form-group">
                     <label class="bmd-label-floating">Nombre</label>
-                    <input type="email" class="form-control" name="name">
+                    <input type="text" class="form-control" name="name">
                 </div>
                 </div>
             </div>

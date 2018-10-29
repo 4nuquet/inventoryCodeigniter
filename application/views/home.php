@@ -218,6 +218,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     });
   </script>
+  <script src="assets/js/items.js"></script>
 </body>
 
 </html>
