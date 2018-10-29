@@ -31,7 +31,7 @@ CREATE TABLE tbl_discount(
     dis_type INT NOT NULL,
     dis_value DOUBLE NOT NULL,
     dis_dateStart DATE NOT NULL,
-    dis_dateEnd DATA NOT NULL,
+    dis_dateEnd DATE NOT NULL,
     dis_state BOOLEAN NOT NULL,
     PRIMARY KEY (dis_id)
 );
