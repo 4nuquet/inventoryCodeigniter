@@ -1,20 +1,19 @@
      
-      <div class="content">
-        <div class="container-fluid">
-          <div class="card card-plain">
-            <div class="card-header card-header-primary">
-              <h4 class="card-title mt-0"> Listado de Articulos</h4>
-              <p class="card-category"> Productos existentes en Inventario</p>
-              <div class="container">
-                <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#modal-item"><i class="material-icons">add</i>Agregar Item</button>
-              </div>
-            </div>
-          </div>
-        </div>           
-          <div id="item-list" class="container row">
-
-          </div>
+<div id="tabItem" class="content">
+  <div class="container-fluid">
+    <div class="card card-plain">
+      <div class="card-header card-header-primary">
+        <h4 class="card-title mt-0"> Listado de Articulos</h4>
+        <p class="card-category"> Productos existentes en Inventario</p>
+        <div class="container">
+          <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#modal-item"><i class="material-icons">add</i>Agregar Item</button>
+        </div>
       </div>
+    </div>
+  </div>           
+  <div id="item-list" class="container row">
+  </div>
+</div>
 
       <?php include('_modals.php');?>
       <footer class="footer">

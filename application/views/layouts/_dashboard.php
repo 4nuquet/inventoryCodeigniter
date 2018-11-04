@@ -1,4 +1,4 @@
-<div class="content">
+<div id="tabDash" class="content">
         <div class="container-fluid">
           <div class="row">
             <div class="col-lg-3 col-md-6 col-sm-6">

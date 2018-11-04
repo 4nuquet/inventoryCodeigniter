@@ -37,19 +37,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <div class="sidebar-wrapper">
         <ul class="nav">
           <li class="nav-item active  ">
-            <a class="nav-link" href="./dashboard.html">
+            <a class="nav-link" href="<?=base_url();?>?view=dashboard">
               <i class="material-icons">dashboard</i>
               <p>Dashboard</p>
             </a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="./user.html">
+            <a class="nav-link" href="<?=base_url();?>?view=items">
               <i class="material-icons">work</i>
               <p>Inventario</p>
             </a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="./user.html">
+            <a class="nav-link" href="<?=base_url();?>?view=users">
               <i class="material-icons">person</i>
               <p>User Profile</p>
             </a>
@@ -154,10 +154,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
       </nav>
       <!-- End Navbar -->
-    
-      
-      <?php include('layouts/_items.php');?>
-      </div>    
+      <div class="content content-view">
+        <?php
+          $view = $_GET['view'];
+          echo $view;
+          if ($view == '' || $view == null || $view == 'dashboard') {   
+            $this->load->view('layouts/_dashboard');
+          }
+          if($view == 'items'){
+            $this->load->view('layouts/_items');
+          }
+          if($view == 'users'){
+            $this->load->view('layouts/_users');
+          }
+          ?>
+      </div>  
 
       <footer class="footer">
         <div class="container-fluid">
