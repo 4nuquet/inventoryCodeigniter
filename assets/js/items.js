@@ -17,6 +17,8 @@ $(document).ready(function(){
             processData: false,
             success: function(res)
             {
+                res = $.parseJSON(res);
+                showNotification(res.color, res.msg);
                 $("#modal-item").modal('hide');
                 $("#form-item")[0].reset();
                 showItems("");
@@ -162,13 +164,9 @@ function itemRemove(id){
         data: {id:id},
         dataType: "json",
         success: function(res){
-            if(!res){
-                showNotification(res[0], res[1]);
-            }else{
-                showNotification(res[0], res[1]);
-            }
             showItems("");
             $("#modal-itemRemove").modal('hide');
+            showNotification(res.color, res.msg);
         }
     });
 }

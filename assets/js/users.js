@@ -92,10 +92,13 @@ $(document).ready(function(){
             method: "post",
             data: $(this).serialize(),
             success: function(res)
-            {
+            {   
+                res = $.parseJSON(res);
+
+                showNotification(res.color, res.msg);
                 $("#modal-userEdit").modal('hide');
                 $("#form-useredit")[0].reset();
-                showUsers("");
+                showUsers();
             }
         });
     });
@@ -104,7 +107,7 @@ $(document).ready(function(){
         e.preventDefault();
         id = $('#form-userRemove input[name=id]').text();
         userRemove(id);
-        showUsers("");
+        showUsers();
         $("#modal-userRemove").modal('hide');
     });    
 
@@ -112,15 +115,12 @@ $(document).ready(function(){
     function userRemove(id){
         $.ajax({
             url: baseURL+"User/remove",
-            method: "post",
+            type: "post",
             data: {id:id},
             dataType: "json",
             success: function(res){
-                if(!res){
-                    showNotification('top','center',3,"Error al eliminar");
-                }else{
-                    showNotification('top','center',2,"Eliminado con exito");
-                }
+
+                showNotification(res.color, res.msg);
 
                 showUsers("");
             }

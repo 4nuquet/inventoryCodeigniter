@@ -14,7 +14,7 @@ class User_model extends CI_model
               'user_name' => $nameuser,
               'user_nid' => $identificacionuser,
               'user_rol' => $roluser,
-              'pass' => $passuser,
+              'user_pass' => $passuser,
               'user_state'=>true
           );
   
@@ -71,11 +71,11 @@ class User_model extends CI_model
             'user_rol' => $role,
             'user_state' => $state
         );
-
+    $id = $data['user_id'];
         //var_dump($data);
         //die();
-        
-        $this->db->replace('tbl_user', $data);
+        $this->db->where('user_id',$id);
+        $this->db->update('tbl_user', $data);
 
         if ($this->db->affected_rows() > 0) {
             return true;
