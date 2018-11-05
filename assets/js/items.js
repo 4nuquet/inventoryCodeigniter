@@ -1,14 +1,20 @@
-var baseURL = "http://localhost/inventory/";
+var baseURL = "http://10.0.0.42/inventory/";
 
 $(document).ready(function(){
 
+    showItems("");
+
+/**------------------------------- Event Create Item -------------------------------*/
     $('#form-item').submit(function(e){
         e.preventDefault();
 
         $.ajax({
             url: $(this).attr("action"),
-			method: "post",
-			data: $(this).serialize(),
+            type: 'post',
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
             success: function(res)
             {
                 $("#modal-item").modal('hide');
@@ -17,9 +23,10 @@ $(document).ready(function(){
             }
         });
     });
+/**------------------------------- End Event Create Item -------------------------------*/
 
-    showItems("");
-
+    
+/**------------------------------- Event Load Edit Item -------------------------------*/
     $('body').on('click', '#item-list a.edit ',function(e){
     
          id = $(this).attr("href");
@@ -49,7 +56,10 @@ $(document).ready(function(){
         });
         e.preventDefault();
     });
+/**------------------------------- End Event Load Edit Item -------------------------------*/
 
+
+/**------------------------------- Event Remove Item -------------------------------*/
     $('body').on('click', '#item-list a.remove', function(e){
        
         id = $(this).attr("href");
@@ -72,58 +82,78 @@ $(document).ready(function(){
 
     $('#form-itemRemove').submit(function(e) {
         e.preventDefault();
+
         id = $('#form-itemRemove input[name=id]').val();
         itemRemove(id);
-        //alert(id);
-        showItems("");
+    });  
+    /**------------------------------- End Event Remove Item -------------------------------*/
 
-        $("#modal-itemRemove").modal('hide');
-    });    
-
+    /**------------------------------- Event Edit Item -------------------------------*/
     $('#form-itemEdit').submit(function(e){
         e.preventDefault();
 
         $.ajax({
             url: $(this).attr("action"),
-            method: "post",
+            type: "post",
             data: $(this).serialize(),
             success: function(res)
-            {
+            {   
+                res = $.parseJSON(res);
+
+                showNotification(res.color, res.msg);
+
                 $("#modal-itemEdit").modal('hide');
                 $("#form-itemEdit")[0].reset();
                 showItems("");
             }
         });
     });
-
-    /**Events sidebar */
-    
-
+    /**------------------------------- End Event Edit Item -------------------------------*/
 });
+/**############    END DOCUMENT.READEY    ############*/
 
- function showNotification(from, aling, color, message) {
+
+/**------------------------------- Preview Image------------------------------- */
+
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#prevPic')
+                .attr('src', e.target.result);
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+    $('#prevPic').removeClass().addClass('card-icon');
+}
+/**------------------------------- End Preview Image------------------------------- */
+
+
+/**------------------------------- Notifications -------------------------------*/
+ function showNotification(color, message) {
     type = ['', 'info', 'danger', 'success', 'warning', 'rose', 'primary'];
 
-    //colo = Math.floor((Math.random() * 6) + 1);
-    
-    let colo;
-    colo=Number(color);
-    console.log(": " + typeof(colo));
+    pos = Number(color);
+    console.log("function "+pos+" "+message);
     $.notify(
         {
             icon: "add_alert",
             message: message
         }, 
         {
-            type: type[colo],
-            timer: 3000,
+            type: type[pos],
+            timer: 2000,
             placement: {
-                        from: from,
-                        align: aling
+                        from: 'top',
+                        align:'center'
                         }
-     
-    });
+    });  
 }
+/**------------------------------- End Notifications -------------------------------*/
+
+/**------------------------------- Remove Items -------------------------------*/
 
 function itemRemove(id){
     $.ajax({
@@ -133,13 +163,18 @@ function itemRemove(id){
         dataType: "json",
         success: function(res){
             if(!res){
-                showNotification('top','center',3,"Error al eliminar");
+                showNotification(res[0], res[1]);
             }else{
-                showNotification('top','center',2,"Eliminado con exito");
+                showNotification(res[0], res[1]);
             }
+            showItems("");
+            $("#modal-itemRemove").modal('hide');
         }
     });
 }
+/**------------------------------- End Remove Items -------------------------------*/
+
+/**------------------------------- Show Items -------------------------------*/
 function showItems(key){
 
     $.ajax({
@@ -151,16 +186,19 @@ function showItems(key){
                 html = '';
             $.each(res, function(val, item){
                 html += `
-                <div class="col-md-3">
-                    <div class="card card-stats">
-                        <div class="card-header card-header-warning card-header-icon">
-                            <div class="card-icon">
-                                <i class="material-icons">content_copy</i>
+                <div class="col-lg-3 col-md-3">
+                    <div class="card card-stats b-primary card-item">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <img src="uploads/images/${item.pic_url}" class="img-fluid"/>
                             </div>
-                            <p class="card-category">${item.item_category}</p>
-                            <h3 class="card-title">${item.item_name}<br>
-                            <small>$ ${item.item_pSell}</small>
-                            </h3>
+                            <div class="col-md-6">
+                                <div class="container text-right">
+                                    <p class="card-category">${item.cat_name}</p>
+                                    <h3 class="card-title">${item.item_name}</h3>
+                                    <h3 class="card-title">$ ${item.item_pSell}</h3>
+                                </div>   
+                            </div>
                         </div>
                         <div class="card-footer">
                             <div class="stats">
@@ -180,3 +218,4 @@ function showItems(key){
         }
     });
 }
+/**------------------------------- End Show Items -------------------------------*/

@@ -13,7 +13,7 @@
             <!--<p class="card-category">Complete your profile</p>-->
         </div>
         <div class="card-body">
-            <form id="form-item" method="post" action="<?=base_url();?>Home/create">
+            <form id="form-item" method="post" enctype="multipart/form-data" action="<?=base_url();?>Home/create">
             <div class="row">
                 <div class="col-md-6">
                 <div class="form-group bmd-form-group">
@@ -29,54 +29,52 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4">
-                <div class="form-group bmd-form-group">
-                    <label class="bmd-label-floating">Cantidad</label>
-                    <input type="text" class="form-control" name="stock">
-                </div>
-                </div>
-                <div class="col-md-4">
-                <div class="form-group bmd-form-group">
-                    <label class="bmd-label-floating">Precio Compra</label>
-                    <input type="text" class="form-control" name="pBuy">
-                </div>
-                </div>
-                <div class="col-md-4">
-                <div class="form-group bmd-form-group">
-                    <label class="bmd-label-floating">Precio Venta</label>
-                    <input type="text" class="form-control" name="pSell">
-                </div>
-                </div>
-            </div>
-            <div class="row">
-                <!--
-                    <div class="col-md-12">
-                    <div class="file-field input-field">
-                        <div class="btn">
-                            <input type="file" name="" id="" class="form-control">
-                        </div>
+                <div class="col-md-6">
+                    <div class="form-group bmd-form-group">
+                        <label class="bmd-label-floating">Precio Compra</label>
+                        <input type="text" class="form-control" name="pBuy">
                     </div>
                 </div>
-                -->
-            </div>
-            <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
+                    <div class="form-group bmd-form-group">
+                        <label class="bmd-label-floating">Precio Venta</label>
+                        <input type="text" class="form-control" name="pSell">
+                    </div>
+                </div>
+                <div class="col-md-6">
                     <div class="form-group bmd-form-group">
                         <label class="bmd-label-floating">Categoria</label>
                         <input type="text" class="form-control" name="category">
                     </div>
                 </div>
+                <div class="col-md-4">
+                    <div class="form-group bmd-form-group">
+                        <label class="bmd-label-floating">Cantidad</label>
+                        <input type="text" class="form-control" name="stock">
+                    </div>
+                </div>
             </div>
             <div class="row">
-            </div>
-            
+                <div class="col-md-12 ">
+                    <div class="file-field input-field text-center">
+                        <div class="btn btn-primary">
+                            <input type="file" name="picture" id="picture" class="form-control" onchange="readURL(this);">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="container text-center mt-3">
+                        <img id="prevPic" src="" class="d-none" style="max-height: 200px;">
+                    </div>   
+                </div>
+            </div>          
         </div>
         </div>
 
       </div>
       <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">Guardar</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-success">Guardar</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
       </div>
       </form>
     </div>

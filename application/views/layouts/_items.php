@@ -11,7 +11,7 @@
       </div>
     </div>
   </div>           
-  <div id="item-list" class="container row">
+  <div id="item-list" class="container-fluid row">
   </div>
 </div>
 
