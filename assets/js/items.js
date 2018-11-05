@@ -96,6 +96,7 @@ $(document).ready(function(){
         });
     });
 
+    /**Events sidebar */
     
 
 });
@@ -178,7 +179,4 @@ function showItems(key){
             $("#item-list").html(html)
         }
     });
-
-    
-
 }

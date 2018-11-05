@@ -1,0 +1,16 @@
+
+@
+@date =>    04/nov/2018
+
+@earlierVersion => v0.1
+
+@details => "   *   Fixed bugs and improved design views
+                *   add navigation between views
+                *   Added in SQL a "join" between ITEM and CATEGORY tables
+                *   the file was restructured and new functionalities were added in addition to the comments
+            "
+
+@commitFrom => 4nuquet
+
+@releaseVersion => v0.5
+
