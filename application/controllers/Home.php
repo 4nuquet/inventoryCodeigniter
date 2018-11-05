@@ -36,18 +36,14 @@ class Home extends CI_Controller {
 
 
 				$res = $this->Item_model->create($data);
-				var_dump($res);
-				die();
 
 				if ($res) {
-					$alert = array(2, "Articulo Registrado Exitosamente");
+					$data = array('color' => 3, 'msg' => "Articulo Registrado Exitosamente");
 				}else{
-					 $alert = array(3, "Error al Registrado Articulo");
+					 $data = array('color' => 2, 'msg' => "Error al Registrado Articulo");
 				}
-			}else{
-				$alert = $resImg;
 			}
-			echo json_encode($alert);
+			echo json_encode($data);
 			
 		}
 	}
@@ -116,9 +112,9 @@ class Home extends CI_Controller {
 
 			if ($res) 
 			{
-				 $data = array(3, 'Se Elimino Correctamente');
+				 $data = array('color' => 3, 'msg'=> 'Se Elimino Correctamente');
 			}else{
-				 $data = array(2, 'Error al Eliminar');
+				 $data = array('color' => 2, 'msg'=> 'Error al Eliminar');
 			}
 
 			echo json_encode($data);

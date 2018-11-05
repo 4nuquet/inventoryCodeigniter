@@ -15,7 +15,7 @@
   </div>
 </div>
 
-      <?php include('_modals.php');?>
+      
       <footer class="footer">
         <div class="container-fluid">
           <nav class="float-left">
