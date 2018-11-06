@@ -1,4 +1,4 @@
-var baseURL = "http://10.0.0.42/inventory/";
+var baseURL = "http://localhost/inventory/";
 
 $(document).ready(function(){
 

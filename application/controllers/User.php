@@ -7,35 +7,58 @@ class User extends CI_Controller {
 	{
 		parent:: __construct();
 		$this->load->model('User_model');
+		$this->load->library('upload');
     }
 
     function create(){
 
         if ($this->input->is_ajax_request()) 
 		{	
-			//obtain Values
-			$nameuser = $this->input->post('nameuser');
-			$identificacionuser = $this->input->post('identificacionuser');
-            $passuser = md5($this->input->post('passuser'));
-            $roluser = $this->input->post('roluser');
-            
-           
-			//send to Insert Data
-			$res = $this->User_model->create($nameuser,$identificacionuser,$passuser,$roluser);
-			if ($res) {
-				echo "Succes";
-			}else{
-				echo "Error";
-            } 
+
+			$resImg= $this->uploadImage();
+
+			if ($resImg !== false) {
+
+				//obtain Values
+				$nameuser = $this->input->post('nameuser');
+				$identificacionuser = $this->input->post('identificacionuser');
+				$passuser = md5($this->input->post('passuser'));
+				$roluser = $this->input->post('roluser');
+				
+			
+				//send to Insert Data
+				$res = $this->User_model->create($nameuser,$identificacionuser,$passuser,$roluser,$resImg);
+				if ($res) {
+					echo "Succes";
+				}else{
+					echo "Error";
+				} 
+			
+		    }
             
 		}
     }
 
+
+	
     function show(){
-        
-        if($this->input->is_ajax_request()){
-            $data=$this->User_model->show();
-            echo json_encode($data) ;
+
+		$mount=10;
+
+		$word = $this->input->post("word");
+		$no_pag = $this->input->post('no_pag');
+		
+		$init = ($no_pag - 1) * $mount;
+
+		if($this->input->is_ajax_request()){
+
+			$res = array(
+				'data' => $this->User_model->show($word, $init, $mount),
+				'total' => count($this->User_model->show($word)),
+				'mount' => $mount
+				);
+
+			echo json_encode($res);	
         }
      
     }
@@ -72,6 +95,9 @@ class User extends CI_Controller {
 		if ($this->input->is_ajax_request()) 
 		{	
 
+			$resImg= $this->uploadImage();
+
+			if ($resImg !== false) {
             
             //obtain Values
             $id = $this->input->post('id-user-edit');
@@ -85,7 +111,7 @@ class User extends CI_Controller {
             //die();
             
             //send to Insert Data
-			$res = $this->User_model->edit($id, $name, $nid, $role, $state);
+			$res = $this->User_model->edit($id, $name, $nid, $role, $state,$resImg);
             
 			if ($res) 
 			{
@@ -96,7 +122,40 @@ class User extends CI_Controller {
 
 			echo json_encode($data);
 
+		    }
+
 		}
+	}
+
+	public function uploadImage(){
+
+		$config['upload_path']          = './uploads/images';
+		$config['allowed_types']        = 'gif|jpg|png';
+		$config['max_size']             = 70000;
+		$config['max_width']            = 1024;
+		$config['max_height']           = 768;
+		$config['overwrite']			= true;
+		
+		$this->upload->initialize($config);
+
+		if(isset($_FILES['picture']['name'])){
+
+			if ($this->upload->do_upload('picture')) {
+
+				$data = $this->upload->data();
+
+				$file = $data['file_name'];
+
+				$res = $this->User_model->uploadImage($file);
+				
+			}else{
+				$res = array('error' => $this->upload->display_errors());
+			}
+
+		}else{
+			$res = $_FILES['picture']['name']. "Error Image";
+		}
+		return $res;
 	}
 
 }

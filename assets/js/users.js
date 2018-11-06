@@ -5,13 +5,20 @@ $(document).ready(function(){
 
     showUsers();
 
+    //envio a crear los usuarios
+    //create
+
     $('#form-user').submit(function(e){
         e.preventDefault();    
           $.ajax({
             url: $(this).attr("action"),
-			method: "post",
-			data: $(this).serialize(),
-            success: function(res)
+            type: "post",
+            //data: $(this).serialize(),
+            data: new FormData(this),
+            contentType:false,
+            cache:false,
+            processData:false,
+			success: function(res)
             {
                 $("#modal-user").modal('hide');
                 $("#form-user")[0].reset();
@@ -66,6 +73,18 @@ $(document).ready(function(){
                 idUser=res.user_id;
                 //console.log(res.user_name);
 
+                
+
+                if(res.pic_url){
+                    ruta=`uploads/images/${res.pic_url}`;     
+
+                    //cambiamos la imagen
+                    $("#imguser").attr("src",""+ruta+"");
+                }else{
+                    ruta=`assets/img/default-avatar.png`;     
+                    $("#imguser").attr("src",""+ruta+"");
+                }
+
                 $('input[name="nameuser"]').val(nombre);
                 $('input[name="nameuser"]').parent().addClass('is-focused');
                 
@@ -89,8 +108,11 @@ $(document).ready(function(){
 
         $.ajax({
             url: $(this).attr("action"),
-            method: "post",
-            data: $(this).serialize(),
+            type: "post",
+            data: new FormData(this),
+            contentType:false,
+            cache:false,
+            processData:false,
             success: function(res)
             {   
                 res = $.parseJSON(res);
@@ -127,15 +149,25 @@ $(document).ready(function(){
         });
     }
 
-    
+   /**------------------------------- Event Search Item -------------------------------*/
+   $("#findUser").keyup(function() {
+    key = $(this).val();
+    showUsers(key);
+    });
+/**------------------------------- End Event Search Item -------------------------------*/
+
+
 
 });
 
-function showUsers(){
+function showUsers(key){
+
+    page=1;
+
     $.ajax({
         url: baseURL+'User/show',
         method: "post",
-        data: $(this).serialize(),
+        data: {word:key, no_page:page},
         success: function(res)
         {
 
@@ -143,7 +175,7 @@ function showUsers(){
             //console.log(res);
             html='';
 
-            $.each(res,function(val,item){
+            $.each(res.data,function(val,item){
                 
 
                 if(item.user_state==1){
@@ -151,8 +183,16 @@ function showUsers(){
                 }else{
                     state='Inactivo';
                 }
+
+                ruta='';
+
+                if(item.pic_url){
+                    ruta=`uploads/images/${item.pic_url}`;
+                }else{
+                    ruta='assets/img/default-avatar.png';
+                }
                 html += `<tr class="user-list">  
-                
+                    <td><img  style="max-width: 64px;" src="${ruta}" style=""/></td>
                     <td>${item.user_name}</td> 
                     <td>${item.user_nid}</td> 
                     <td>${item.user_rol}</td> 
@@ -179,3 +219,20 @@ function showUsers(){
         }
     });
 }
+
+/**------------------------------- Preview Image------------------------------- */
+
+function readURL2(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#imguser')
+                .attr('src', e.target.result);
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+    $('#imguser').removeClass().addClass('card-icon');
+}
+/**------------------------------- End Preview Image------------------------------- */

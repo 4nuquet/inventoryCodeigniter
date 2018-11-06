@@ -5,17 +5,16 @@ class User_model extends CI_model
 {
 
       //received Data
-      function create($nameuser,$identificacionuser,$passuser,$roluser)
+      function create($nameuser,$identificacionuser,$passuser,$roluser,$resImg)
       {
-        
-
           //Prepare Data
           $data = array(
               'user_name' => $nameuser,
               'user_nid' => $identificacionuser,
               'user_rol' => $roluser,
               'user_pass' => $passuser,
-              'user_state'=>true
+              'user_state'=>true,
+              'user_picture'=>$resImg
           );
   
           $this->db->insert('tbl_user', $data);
@@ -29,9 +28,15 @@ class User_model extends CI_model
       }
 
 
-      function show(){
+      function show($word, $init=FALSE, $mount=FALSE){
 
-        $query = $this->db->get('tbl_user');
+
+        $this->db->select('*');
+        $this->db->from('tbl_user');
+        $this->db->join('tbl_picture','tbl_user.user_picture=tbl_picture.pic_id','left');
+        $this->db->like('tbl_user.user_name',$word);
+        
+        $query = $this->db->get();
 
         return $query->result();
     }
@@ -42,7 +47,12 @@ class User_model extends CI_model
             'user_id' => $id
         );
 
-        $query = $this->db->get_where('tbl_user', $data);
+        $this->db->select('*');
+        $this->db->from('tbl_user');
+        $this->db->join('tbl_picture','tbl_user.user_picture=tbl_picture.pic_id','left');
+        $this->db->where('user_id',$id);
+        $query = $this->db->get();
+        //$query = $this->db->get_where('tbl_user', $data);
 
         return $query->result();
     }
@@ -61,7 +71,7 @@ class User_model extends CI_model
         }
     }
 
-    function edit($id, $name, $nid, $role, $state){
+    function edit($id, $name, $nid, $role, $state,$resImg){
 
         //Prepare Data
         $data = array(
@@ -69,7 +79,8 @@ class User_model extends CI_model
             'user_name' => $name,
             'user_nid' => $nid,
             'user_rol' => $role,
-            'user_state' => $state
+            'user_state' => $state,
+            'user_picture'=>$resImg
         );
     $id = $data['user_id'];
         //var_dump($data);
@@ -84,6 +95,33 @@ class User_model extends CI_model
             return false;
         }
     
+    }
+
+    function uploadImage($name){
+
+        $data = array(
+            'pic_url' => $name
+        );
+
+        $exist = $this->db->get_where('tbl_picture', $data);
+
+        if($exist->num_rows() > 0){
+            $exist = $exist->row();
+            return $exist->pic_id;
+        }else {
+            $query = $this->db->insert('tbl_picture', $data);
+
+            if ($this->db->affected_rows() > 0) {
+                $query = $this->db->get_where('tbl_picture', $data);
+                $res = $query->row();
+    
+                return $res->pic_id;
+            }else
+            {
+                return false;
+            }
+        }
+
     }
 
 
