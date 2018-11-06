@@ -17,6 +17,13 @@ class User extends CI_Controller {
 
 			$resImg= $this->uploadImage();
 
+			if($resImg['error'] !== ""){
+
+				
+				$resImg = 'assets/img/default-avatar.png';
+
+			}
+
 			if ($resImg !== false) {
 
 				//obtain Values
@@ -28,14 +35,14 @@ class User extends CI_Controller {
 			
 				//send to Insert Data
 				$res = $this->User_model->create($nameuser,$identificacionuser,$passuser,$roluser,$resImg);
-				if ($res) {
-					echo "Succes";
+				if ($res) 
+				{
+					$data =  array('color' => 3, 'msg' => "Se Edito Correctamente");
 				}else{
-					echo "Error";
-				} 
-			
+					$data =  array('color' => 2, 'msg' => "Error al Editar");
+				}
+				echo json_encode($data);
 		    }
-            
 		}
     }
 
@@ -95,12 +102,22 @@ class User extends CI_Controller {
 		if ($this->input->is_ajax_request()) 
 		{	
 
-			$resImg= $this->uploadImage();
+			$resImg = $this->uploadImage();
+			$id = $this->input->post('id-user-edit');
+
+			
+
+			if($resImg['error'] !== ""){
+
+				$val = $this->User_model->find($id);
+				$resImg = $val[0]->pic_id;
+
+			}
 
 			if ($resImg !== false) {
             
             //obtain Values
-            $id = $this->input->post('id-user-edit');
+            
             $name = $this->input->post('nameuser');
             //$pass
 			$nid = $this->input->post('identificacionuser');

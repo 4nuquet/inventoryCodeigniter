@@ -1,6 +1,6 @@
 var baseURL = "http://localhost/inventory/";
 
-$(document).ready(function(){
+$(document).ready(function() {
 
 
     showUsers();
@@ -8,45 +8,47 @@ $(document).ready(function(){
     //envio a crear los usuarios
     //create
 
-    $('#form-user').submit(function(e){
-        e.preventDefault();    
-          $.ajax({
+    $('#form-user').submit(function(e) {
+        e.preventDefault();
+        $.ajax({
             url: $(this).attr("action"),
             type: "post",
             //data: $(this).serialize(),
             data: new FormData(this),
-            contentType:false,
-            cache:false,
-            processData:false,
-			success: function(res)
-            {
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(res) {
+                res = $.parseJSON(res);
+
                 $("#modal-user").modal('hide');
                 $("#form-user")[0].reset();
-               showUsers();
+                showNotification(res.color, res.msg);
+                showUsers();
             }
         });
     });
 
 
-    $('body').on('click', '.user-list a.remove', function(e){
-       
+    $('body').on('click', '.user-list a.remove', function(e) {
+
         id = $(this).attr("href");
 
         $.ajax({
-            url: baseURL+"User/find",
+            url: baseURL + "User/find",
             method: "post",
-            data: {id:id},
+            data: { id: id },
             dataType: "json",
-            success: function(res){
+            success: function(res) {
                 console.log(res);
 
-                $.each(res, function(val, item){
-                    $("#modal-userRemove #nameRemove").text("Usuario: "+item.user_name);
+                $.each(res, function(val, item) {
+                    $("#modal-userRemove #nameRemove").text("Usuario: " + item.user_name);
                     $("#form-userRemove input[name=id]").text(item.user_id);
-                    
+
                 });
 
-                
+
                 $("#modal-userRemove").modal();
             }
         });
@@ -54,40 +56,40 @@ $(document).ready(function(){
         e.preventDefault();
     });
 
-    $('body').on('click', '.user-list a.edit', function(e){
-       
+    $('body').on('click', '.user-list a.edit', function(e) {
+
         id = $(this).attr("href");
 
-        
+
         $.ajax({
-            url: baseURL+"User/find",
+            url: baseURL + "User/find",
             method: "post",
-            data: {id:id},
+            data: { id: id },
             dataType: "json",
-            success: function(res){
+            success: function(res) {
                 //console.log(res);
-                res=res[0];
-                nombre=res.user_name;
-                identificacion=res.user_nid;
-                rol=res.user_rol;
-                idUser=res.user_id;
+                res = res[0];
+                nombre = res.user_name;
+                identificacion = res.user_nid;
+                rol = res.user_rol;
+                idUser = res.user_id;
                 //console.log(res.user_name);
 
-                
 
-                if(res.pic_url){
-                    ruta=`uploads/images/${res.pic_url}`;     
+
+                if (res.pic_url) {
+                    ruta = `uploads/images/${res.pic_url}`;
 
                     //cambiamos la imagen
-                    $("#imguser").attr("src",""+ruta+"");
-                }else{
-                    ruta=`assets/img/default-avatar.png`;     
-                    $("#imguser").attr("src",""+ruta+"");
+                    $("#imguser").attr("src", "" + ruta + "");
+                } else {
+                    ruta = `assets/img/default-avatar.png`;
+                    $("#imguser").attr("src", "" + ruta + "");
                 }
 
                 $('input[name="nameuser"]').val(nombre);
                 $('input[name="nameuser"]').parent().addClass('is-focused');
-                
+
                 $('input[name="identificacionuser"]').val(identificacion);
                 $('input[name="identificacionuser"]').parent().addClass('is-focused');
 
@@ -97,24 +99,23 @@ $(document).ready(function(){
                 //alert(idUser);
                 $('input[name="id-user-edit"]').text(idUser);
                 $('#id-user-edit').val(idUser);
-                
+
                 $("#modal-userEdit").modal();
             }
         });
     });
 
-    $('#form-useredit').submit(function(e){
+    $('#form-useredit').submit(function(e) {
         e.preventDefault();
 
         $.ajax({
             url: $(this).attr("action"),
             type: "post",
             data: new FormData(this),
-            contentType:false,
-            cache:false,
-            processData:false,
-            success: function(res)
-            {   
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(res) {
                 res = $.parseJSON(res);
 
                 showNotification(res.color, res.msg);
@@ -131,16 +132,16 @@ $(document).ready(function(){
         userRemove(id);
         showUsers();
         $("#modal-userRemove").modal('hide');
-    });    
+    });
 
 
-    function userRemove(id){
+    function userRemove(id) {
         $.ajax({
-            url: baseURL+"User/remove",
+            url: baseURL + "User/remove",
             type: "post",
-            data: {id:id},
+            data: { id: id },
             dataType: "json",
-            success: function(res){
+            success: function(res) {
 
                 showNotification(res.color, res.msg);
 
@@ -149,47 +150,46 @@ $(document).ready(function(){
         });
     }
 
-   /**------------------------------- Event Search Item -------------------------------*/
-   $("#findUser").keyup(function() {
-    key = $(this).val();
-    showUsers(key);
+    /**------------------------------- Event Search Item -------------------------------*/
+    $("#findUser").keyup(function() {
+        key = $(this).val();
+        showUsers(key);
     });
-/**------------------------------- End Event Search Item -------------------------------*/
+    /**------------------------------- End Event Search Item -------------------------------*/
 
 
 
 });
 
-function showUsers(key){
+function showUsers(key) {
 
-    page=1;
+    page = 1;
 
     $.ajax({
-        url: baseURL+'User/show',
+        url: baseURL + 'User/show',
         method: "post",
-        data: {word:key, no_page:page},
-        success: function(res)
-        {
+        data: { word: key, no_page: page },
+        success: function(res) {
 
-            res=JSON.parse(res);
+            res = JSON.parse(res);
             //console.log(res);
-            html='';
+            html = '';
 
-            $.each(res.data,function(val,item){
-                
+            $.each(res.data, function(val, item) {
 
-                if(item.user_state==1){
-                   state='Activo';
-                }else{
-                    state='Inactivo';
+
+                if (item.user_state == 1) {
+                    state = 'Activo';
+                } else {
+                    state = 'Inactivo';
                 }
 
-                ruta='';
+                ruta = '';
 
-                if(item.pic_url){
-                    ruta=`uploads/images/${item.pic_url}`;
-                }else{
-                    ruta='assets/img/default-avatar.png';
+                if (item.pic_url) {
+                    ruta = `uploads/images/${item.pic_url}`;
+                } else {
+                    ruta = 'assets/img/default-avatar.png';
                 }
                 html += `<tr class="user-list">  
                     <td><img  style="max-width: 64px;" src="${ruta}" style=""/></td>
@@ -215,7 +215,7 @@ function showUsers(key){
 
             $('#showUsers').html(html);
 
-            
+
         }
     });
 }
@@ -226,7 +226,7 @@ function readURL2(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
 
-        reader.onload = function (e) {
+        reader.onload = function(e) {
             $('#imguser')
                 .attr('src', e.target.result);
         };
