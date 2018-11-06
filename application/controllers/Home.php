@@ -50,19 +50,23 @@ class Home extends CI_Controller {
 
 	public function show(){
 
+		$mount = 10;
+
 		if ($this->input->is_ajax_request()) 
 		{
 			$word = $this->input->post("word");
-			
-			$res = $this->Item_model->show();
+			$no_pag = $this->input->post('no_pag');
 
-			if(count($res) > 0 )
-			{
-				echo json_encode($res);
-			}else
-			{
-				echo "Error";
-			}
+			$init = ($no_pag - 1) * $mount;
+
+			$res = array(
+						'data' => $this->Item_model->show($word, $init, $mount),
+						'total' => count($this->Item_model->show($word)),
+						'mount' => $mount
+						);
+
+			echo json_encode($res);		
+
 		}
 	}
 
@@ -125,7 +129,7 @@ class Home extends CI_Controller {
 
 		$config['upload_path']          = './uploads/images';
 		$config['allowed_types']        = 'gif|jpg|png';
-		$config['max_size']             = 100;
+		$config['max_size']             = 204800;
 		$config['max_width']            = 1024;
 		$config['max_height']           = 768;
 		$config['overwrite']			= true;

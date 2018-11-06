@@ -58,7 +58,7 @@
                 <div class="col-md-12 ">
                     <div class="file-field input-field text-center">
                         <div class="btn btn-primary">
-                            <input type="file" name="picture" id="picture" class="form-control" onchange="readURL(this);">
+                            <input type="file" name="picture" id="picture" class="form-control" onchange="readURL(this);" style="color: white;">
                         </div>
                     </div>
                 </div>

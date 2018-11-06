@@ -1,11 +1,11 @@
-var baseURL = "http://10.0.0.42/inventory/";
+var baseURL = "http://localhost/inventory/";
 
-$(document).ready(function(){
+$(document).ready(function() {
 
     showItems("");
 
-/**------------------------------- Event Create Item -------------------------------*/
-    $('#form-item').submit(function(e){
+    /**------------------------------- Event Create Item -------------------------------*/
+    $('#form-item').submit(function(e) {
         e.preventDefault();
 
         $.ajax({
@@ -15,8 +15,7 @@ $(document).ready(function(){
             contentType: false,
             cache: false,
             processData: false,
-            success: function(res)
-            {
+            success: function(res) {
                 res = $.parseJSON(res);
                 showNotification(res.color, res.msg);
                 $("#modal-item").modal('hide');
@@ -25,22 +24,22 @@ $(document).ready(function(){
             }
         });
     });
-/**------------------------------- End Event Create Item -------------------------------*/
+    /**------------------------------- End Event Create Item -------------------------------*/
 
-    
-/**------------------------------- Event Load Edit Item -------------------------------*/
-    $('body').on('click', '#item-list a.edit ',function(e){
-    
-         id = $(this).attr("href");
-        
+
+    /**------------------------------- Event Load Edit Item -------------------------------*/
+    $('body').on('click', '#item-list a.edit ', function(e) {
+
+        id = $(this).attr("href");
+
         $.ajax({
-            url: baseURL+"Home/find",
-            method: "post",
-            data: {id:id},
+            url: baseURL + "Home/find",
+            type: "post",
+            data: { id: id },
             dataType: "json",
-            success: function(res){
+            success: function(res) {
 
-                $.each(res, function(val, item){
+                $.each(res, function(val, item) {
                     $("#modal-itemEdit input[name=name]").parent().addClass("is-focused is-filled");
                     $("#modal-itemEdit input[name=stock]").parent().addClass("is-focused is-filled");
                     $("#modal-itemEdit input[name=pBuy").parent().addClass("is-focused is-filled");
@@ -58,23 +57,23 @@ $(document).ready(function(){
         });
         e.preventDefault();
     });
-/**------------------------------- End Event Load Edit Item -------------------------------*/
+    /**------------------------------- End Event Load Edit Item -------------------------------*/
 
 
-/**------------------------------- Event Remove Item -------------------------------*/
-    $('body').on('click', '#item-list a.remove', function(e){
-       
+    /**------------------------------- Event Remove Item -------------------------------*/
+    $('body').on('click', '#item-list a.remove', function(e) {
+
         id = $(this).attr("href");
 
         $.ajax({
-            url: baseURL+"Home/find",
+            url: baseURL + "Home/find",
             method: "post",
-            data: {id:id},
+            data: { id: id },
             dataType: "json",
-            success: function(res){
+            success: function(res) {
                 console.log(res);
-                $.each(res, function(val, item){
-                    $("#modal-itemRemove #nameRemove").text("Articulo: "+item.item_name);
+                $.each(res, function(val, item) {
+                    $("#modal-itemRemove #nameRemove").text("Articulo: " + item.item_name);
                     $("#modal-itemRemove input[name=id]").val(item.item_id);
                 });
             }
@@ -87,19 +86,18 @@ $(document).ready(function(){
 
         id = $('#form-itemRemove input[name=id]').val();
         itemRemove(id);
-    });  
+    });
     /**------------------------------- End Event Remove Item -------------------------------*/
 
     /**------------------------------- Event Edit Item -------------------------------*/
-    $('#form-itemEdit').submit(function(e){
+    $('#form-itemEdit').submit(function(e) {
         e.preventDefault();
 
         $.ajax({
             url: $(this).attr("action"),
             type: "post",
             data: $(this).serialize(),
-            success: function(res)
-            {   
+            success: function(res) {
                 res = $.parseJSON(res);
 
                 showNotification(res.color, res.msg);
@@ -111,6 +109,13 @@ $(document).ready(function(){
         });
     });
     /**------------------------------- End Event Edit Item -------------------------------*/
+
+    /**------------------------------- Event Search Item -------------------------------*/
+    $("#findItem").keyup(function() {
+        key = $(this).val();
+        showItems(key);
+    });
+    /**------------------------------- End Event Search Item -------------------------------*/
 });
 /**############    END DOCUMENT.READEY    ############*/
 
@@ -121,7 +126,7 @@ function readURL(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
 
-        reader.onload = function (e) {
+        reader.onload = function(e) {
             $('#prevPic')
                 .attr('src', e.target.result);
         };
@@ -134,36 +139,34 @@ function readURL(input) {
 
 
 /**------------------------------- Notifications -------------------------------*/
- function showNotification(color, message) {
+function showNotification(color, message) {
     type = ['', 'info', 'danger', 'success', 'warning', 'rose', 'primary'];
 
     pos = Number(color);
-    console.log("function "+pos+" "+message);
-    $.notify(
-        {
-            icon: "add_alert",
-            message: message
-        }, 
-        {
-            type: type[pos],
-            timer: 2000,
-            placement: {
-                        from: 'top',
-                        align:'center'
-                        }
-    });  
+    console.log("function " + pos + " " + message);
+    $.notify({
+        icon: "add_alert",
+        message: message
+    }, {
+        type: type[pos],
+        timer: 2000,
+        placement: {
+            from: 'top',
+            align: 'center'
+        }
+    });
 }
 /**------------------------------- End Notifications -------------------------------*/
 
 /**------------------------------- Remove Items -------------------------------*/
 
-function itemRemove(id){
+function itemRemove(id) {
     $.ajax({
-        url: baseURL+"Home/remove",
+        url: baseURL + "Home/remove",
         method: "post",
-        data: {id:id},
+        data: { id: id },
         dataType: "json",
-        success: function(res){
+        success: function(res) {
             showItems("");
             $("#modal-itemRemove").modal('hide');
             showNotification(res.color, res.msg);
@@ -173,18 +176,20 @@ function itemRemove(id){
 /**------------------------------- End Remove Items -------------------------------*/
 
 /**------------------------------- Show Items -------------------------------*/
-function showItems(key){
+function showItems(key) {
+
+    page = 1;
 
     $.ajax({
-        url: baseURL+"Home/show",
-        method: "post",
-        data:{word:key},
+        url: baseURL + "Home/show",
+        type: "post",
+        data: { word: key, no_page: page },
         dataType: "json",
-        success: function(res){
-                html = '';
-            $.each(res, function(val, item){
+        success: function(res) {
+            html = '';
+            $.each(res.data, function(val, item) {
                 html += `
-                <div class="col-lg-3 col-md-3">
+                <div class="col-lg-3 col-md-3 col-sm-3 no-gutters">
                     <div class="card card-stats b-primary card-item">
                         <div class="row">
                             <div class="col-md-6">

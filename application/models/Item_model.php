@@ -16,13 +16,19 @@ class Item_model extends CI_model
         }
     }
 
-    function show(){
+    function show($word, $init = FALSE, $mount = FALSE){
         
+        /*if($init !== FALSE && $mount !== FALSE)
+		{
+			$this->db->limit($mount, $init);
+		}*/
+
         $this->db->select('*');
         $this->db->from('tbl_item');
         $this->db->join('tbl_category', 'tbl_item.item_category = tbl_category.cat_id');
         $this->db->join('tbl_picture', 'tbl_item.item_picture = tbl_picture.pic_id ','inner');
-        
+        $this->db->like('tbl_item.item_name', $word);
+
         $query = $this->db->get();
 
         return $query->result();

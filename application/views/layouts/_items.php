@@ -6,7 +6,16 @@
         <h4 class="card-title mt-0"> Listado de Articulos</h4>
         <p class="card-category"> Productos existentes en Inventario</p>
         <div class="container">
-          <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#modal-item"><i class="material-icons">add</i>Agregar Item</button>
+        <div class="row">
+          <div class="col-md-6">
+              <div class="input-group bg-light">        
+                  <input id="findItem" type="text" class="form-control" name="key" placeholder="Buscar">
+              </div>
+          </div>
+          <div class="col-md-6">
+              <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#modal-item"><i class="material-icons">add</i>Agregar Item</button>
+          </div>
+        </div>
         </div>
       </div>
     </div>
