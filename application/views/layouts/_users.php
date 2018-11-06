@@ -84,10 +84,10 @@
                     <input type="text" class="form-control" name="passuser">
                 </div>
                 </div>
-                <div class="col-md-6">
-                  <div class="form-group bmd-form-group">
-                      <label class="bmd-label-floating">Rol</label>
-                      <select name="roluser">
+                <div class="col-md-6" >
+                  <div class="form-group bmd-form-group" style="padding-bottom: 0px !important;">
+                      <label class="bmd-label-floating" style="top: -34%;webkit-appearance: noe !important;">Rol</label>
+                      <select class="form-control" name="roluser" style="padding-left: 10px;padding-right: 10px; border-radius: 8% !important;">
                         <option value="admin">Administrador</option>
                         <option value="super">Supervisor</option>
                         <option value="guest">Cajero</option>
@@ -149,8 +149,8 @@
                 
                 <div class="col-md-6">
                   <div class="form-group bmd-form-group">
-                      <label class="bmd-label-floating">Rol</label>
-                      <select name="roluser">
+                      <label class="bmd-label-floating" style="top: -24%;">Rol</label>
+                      <select class="form-control" name="roluser" style="">
                         <option value="admin">Administrador</option>
                         <option value="super">Supervisor</option>
                         <option value="guest">Cajero</option>
@@ -161,8 +161,8 @@
 
                  <div class="col-md-6">
                   <div class="form-group bmd-form-group">
-                      <label class="bmd-label-floating">Estado</label>
-                      <select name="stateUser">
+                      <label class="bmd-label-floating" style="top: -24%;">Estado</label>
+                      <select name="stateUser" class="form-control">
                         <option value="1">Activo</option>
                         <option value="2">Inactivo</option>
                       </select>
@@ -198,7 +198,7 @@
                 
             </div>
             <div class="card-body">
-                <form id="form-userRemove" method="post" action="<?=base_url();?>Home/remove">
+                <form id="form-userRemove" method="post" action="<?=base_url();?>Home/remove" style="padding: 7%;">
                 <input type="text" name="id-user-rev" class="d-none">
                 <input type="text" name="id" class="d-none">
                 <h4 id="nameRemove" class="card-title"></h4>

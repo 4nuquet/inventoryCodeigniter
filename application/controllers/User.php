@@ -58,10 +58,12 @@ class User extends CI_Controller {
 
 			if ($res) 
 			{
-				echo $res;
+				 $data =  array('color' => 3, 'msg' => "Se Elimino Correctamente");
 			}else{
-				echo false;
+				 $data =  array('color' => 2, 'msg' => "Error al Eliminar");
 			}
+
+			echo json_encode($data);
 		}
     }
 
@@ -84,14 +86,16 @@ class User extends CI_Controller {
             
             //send to Insert Data
 			$res = $this->User_model->edit($id, $name, $nid, $role, $state);
-			if ($res) {
-				echo "Succes";
+            
+			if ($res) 
+			{
+				 $data =  array('color' => 3, 'msg' => "Se Edito Correctamente");
 			}else{
-				echo "Error";
-            } 
-            
-            
-            
+				 $data =  array('color' => 2, 'msg' => "Error al Editar");
+			}
+
+			echo json_encode($data);
+
 		}
 	}
 
