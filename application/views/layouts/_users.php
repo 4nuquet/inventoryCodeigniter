@@ -8,6 +8,14 @@
                   <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#modal-user">
 <i class="material-icons">add</i>Agregar Usuario<div class="ripple-container"></div>
 </button>
+
+<div class="row">
+          <div class="col-md-6">
+              <div class="input-group bg-light">        
+                  <input id="findUser" type="text" class="form-control" name="key" placeholder="Buscar">
+              </div>
+          </div>
+        </div>
                 </div>
                 <div class="card-body">
                   <div class="table-responsive">
@@ -57,11 +65,14 @@
             <!--<p class="card-category">Complete your profile</p>-->
         </div>
         <div class="card-body">
-            <form id="form-user" method="post" action="<?=base_url();?>User/create">
+          <form id="form-user" method="post" enctype="multipart/form-data" action="<?=base_url();?>User/create">
             <input type="text" class="d-none">
-            <div class="row" style="">
-              <img src="assets/img/new_logo.png" style="border-radius: 50%;margin-left: 35%; min-height: 130px;"/>
-            </div>
+            
+             <div class="col-md-12">
+                    <div class="container text-center mt-3">
+                        <img id="prevPic" src="assets/img/default-avatar.png" class="d-noneeee" style="max-height: 140px;">
+                    </div>   
+                </div>
             <div class="row">
                 <div class="col-md-6">
                   <div class="form-group bmd-form-group">
@@ -95,6 +106,16 @@
                       <!--<input type="text" class="form-control" name="roluser">-->
                   </div>
                 </div>
+
+                 <div class="col-md-12 " style="margin-top: 4%;">
+                    <div class="file-field input-field text-center">
+                        <div class="btn btn-primary">
+                            <input type="file" name="picture" id="pictureuser" class="form-control" onchange="readURL(this);" style="color: white;">
+                        </div>
+                    </div>
+                </div>
+
+               
             </div>
         </div>
         </div>
@@ -128,7 +149,7 @@
             <input id="id-user-edit" type="text" name="id-user-edit" class="d-none">
             <input type="text" class="d-none">
             <div class="row" style="">
-              <img src="assets/img/new_logo.png" style="border-radius: 50%;margin-left: 35%; min-height: 130px;"/>
+              <img id="imguser" src="assets/img/default-avatar.png" style="border-radius: 42%; margin-left: 35%; max-width: 130px; max-height: 130px; margin-bottom: 5%;"/>
             </div>
             <div class="row">
                 <div class="col-md-6">
@@ -169,6 +190,16 @@
                       <!--<input type="text" class="form-control" name="roluser">-->
                   </div>
                 </div>
+
+                 <div class="col-md-12 " style="margin-top: 4%;">
+                    <div class="file-field input-field text-center">
+                        <div class="btn btn-primary">
+                            <input type="file" name="picture" id="pictureuseredit" class="form-control" onchange="readURL2(this);" style="color: white;">
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
         </div>
         </div>
